@@ -1080,3 +1080,31 @@ function showToast(message, type = 'info') {
         }, 300);
     }, 3000);
 }
+
+function importData() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = readerEvent => {
+            try {
+                const importedData = JSON.parse(readerEvent.target.result);
+                if (Array.isArray(importedData)) {
+                    robots = importedData;
+                    saveData();
+                    updateRobotSelects();
+                    switchPage('dashboard');
+                    showToast('Dados importados com sucesso!', 'success');
+                } else {
+                    showToast('Arquivo JSON inválido.', 'error');
+                }
+            } catch (error) {
+                showToast('Erro ao ler o arquivo JSON.', 'error');
+            }
+        }
+        reader.readAsText(file);
+    }
+    input.click();
+}
