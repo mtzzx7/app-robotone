@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Sistema de Gestão Estratégica - Equipe de Robótica</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle">☰</button>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>ROBOT O1E</h2>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon"></span>
+                    <span class="nav-text">Dashboard</span>
+                </div>
+                <div class="nav-item" data-page="robots">
+                    <span class="nav-icon"></span>
+                    <span class="nav-text">Robôs</span>
+                </div>
+                <div class="nav-item" data-page="swot">
+                    <span class="nav-icon"></span>
+                    <span class="nav-text">Análise SWOT</span>
+                </div>
+                <div class="nav-item" data-page="performance">
+                    <span class="nav-icon"></span>
+                    <span class="nav-text">Performance</span>
+                </div>
+                <div class="nav-item" data-page="tasks">
+                    <span class="nav-icon"></span>
+                    <span class="nav-text">Tarefas</span>
+                </div>
+                <div class="nav-item" data-page="timer">
+                    <span class="nav-icon"></span>
+                    <span class="nav-text">Temporizador</span>
+                </div>
+                <div class="nav-item" data-page="notes">
+                    <span class="nav-icon"></span>
+                    <span class="nav-text">Anotações</span>
+                </div>
+                <div class="nav-item" data-page="export">
+                    <span class="nav-icon"></span>
+                    <span class="nav-text">Exportar</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 id="page-title">Dashboard Geral</h1>
+                </div>
+                <div class="header-right">
+                    <input type="text" id="search-input" placeholder="Buscar..." class="search-input">
+                    <button class="btn-primary" id="add-robot-btn">+ Novo Robô</button>
+                </div>
+            </header>
+
+            <!-- Pages Container -->
+            <div class="pages-container">
+                <!-- Dashboard Page -->
+                <div id="dashboard-page" class="page active">
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="total-robots">0</div>
+                            <div class="kpi-label">Robôs Ativos</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="total-tests">0</div>
+                            <div class="kpi-label">Testes Realizados</div>
+                        </div>
+                        <div class="kpi-card success">
+                            <div class="kpi-value" id="total-successes">0</div>
+                            <div class="kpi-label">Sucessos</div>
+                        </div>
+                        <div class="kpi-card error">
+                            <div class="kpi-value" id="total-failures">0</div>
+                            <div class="kpi-label">Falhas</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="completed-tasks">0</div>
+                            <div class="kpi-label">Tarefas Concluídas</div>
+                        </div>
+                        <div class="kpi-card warning">
+                            <div class="kpi-value" id="pending-tasks">0</div>
+                            <div class="kpi-label">Tarefas Pendentes</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-section">
+                        <div class="chart-container">
+                            <h3>Performance da Equipe</h3>
+                            <canvas id="team-performance-chart" width="800" height="400"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Comparação entre Robôs</h3>
+                            <canvas id="robots-comparison-chart" width="800" height="400"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>Atividade Recente</h3>
+                        <div id="activity-list" class="activity-list"></div>
+                    </div>
+                </div>
+
+                <!-- Robots Page -->
+                <div id="robots-page" class="page">
+                    <div class="robots-grid" id="robots-grid"></div>
+                </div>
+
+                <!-- SWOT Page -->
+                <div id="swot-page" class="page">
+                    <div class="swot-header">
+                        <select id="swot-robot-select" class="select-input">
+                            <option value="team">Análise Geral da Equipe</option>
+                        </select>
+                    </div>
+                    <div class="swot-matrix">
+                        <div class="swot-quadrant strengths">
+                            <h3>💪 Forças</h3>
+                            <textarea id="strengths-text" placeholder="Liste as forças..."></textarea>
+                            <div class="swot-input">
+                                <input type="text" id="strengths-input" placeholder="Nova força...">
+                                <button onclick="addSWOTItem('strengths')">+</button>
+                            </div>
+                        </div>
+                        <div class="swot-quadrant weaknesses">
+                            <h3>⚠️ Fraquezas</h3>
+                            <textarea id="weaknesses-text" placeholder="Liste as fraquezas..."></textarea>
+                            <div class="swot-input">
+                                <input type="text" id="weaknesses-input" placeholder="Nova fraqueza...">
+                                <button onclick="addSWOTItem('weaknesses')">+</button>
+                            </div>
+                        </div>
+                        <div class="swot-quadrant opportunities">
+                            <h3>🚀 Oportunidades</h3>
+                            <textarea id="opportunities-text" placeholder="Liste as oportunidades..."></textarea>
+                            <div class="swot-input">
+                                <input type="text" id="opportunities-input" placeholder="Nova oportunidade...">
+                                <button onclick="addSWOTItem('opportunities')">+</button>
+                            </div>
+                        </div>
+                        <div class="swot-quadrant threats">
+                            <h3>⚡ Ameaças</h3>
+                            <textarea id="threats-text" placeholder="Liste as ameaças..."></textarea>
+                            <div class="swot-input">
+                                <input type="text" id="threats-input" placeholder="Nova ameaça...">
+                                <button onclick="addSWOTItem('threats')">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Page -->
+                <div id="performance-page" class="page">
+                    <div class="performance-header">
+                        <select id="performance-robot-select" class="select-input">
+                            <option value="team">Performance Geral</option>
+                        </select>
+                        <div class="performance-form">
+                            <input type="date" id="performance-date" class="date-input">
+                            <input type="number" id="performance-successes" placeholder="Sucessos" min="0">
+                            <input type="number" id="performance-failures" placeholder="Falhas" min="0">
+                            <button onclick="addPerformanceData()" class="btn-primary">Registrar</button>
+                        </div>
+                    </div>
+                    <div class="performance-content">
+                        <div class="chart-container">
+                            <canvas id="performance-chart" width="800" height="400"></canvas>
+                        </div>
+                        <div class="performance-table">
+                            <h3>Histórico de Performance</h3>
+                            <div id="performance-history" class="table-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tasks Page -->
+                <div id="tasks-page" class="page">
+                    <div class="tasks-header">
+                        <select id="tasks-robot-select" class="select-input">
+                            <option value="team">Tarefas Gerais</option>
+                        </select>
+                        <div class="task-form">
+                            <input type="text" id="new-task-input" placeholder="Nova tarefa..." class="task-input">
+                            <select id="task-priority" class="select-input">
+                                <option value="low">Baixa</option>
+                                <option value="medium">Média</option>
+                                <option value="high">Alta</option>
+                            </select>
+                            <button onclick="addTask()" class="btn-primary">Adicionar</button>
+                        </div>
+                    </div>
+                    <div id="tasks-list" class="tasks-list"></div>
+                </div>
+
+                <!-- Timer Page -->
+                <div id="timer-page" class="page">
+                    <div class="timer-container">
+                        <h2>Temporizador de Competição</h2>
+                        <div class="timer-display" id="timer-display">02:00</div>
+                        <div class="timer-controls">
+                            <button onclick="startTimer()" class="btn-success">Iniciar</button>
+                            <button onclick="pauseTimer()" class="btn-warning">Pausar</button>
+                            <button onclick="resetTimer()" class="btn-error">Resetar</button>
+                        </div>
+                        <div class="timer-presets">
+                            <button onclick="setTimer(90)">1:30</button>
+                            <button onclick="setTimer(120)">2:00</button>
+                            <button onclick="setTimer(180)">3:00</button>
+                            <button onclick="setTimer(300)">5:00</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Page -->
+                <div id="notes-page" class="page">
+                    <div class="notes-header">
+                        <select id="notes-robot-select" class="select-input">
+                            <option value="team">Anotações Gerais</option>
+                        </select>
+                        <button onclick="saveNotes()" class="btn-primary">Salvar</button>
+                    </div>
+                    <textarea id="notes-textarea" class="notes-textarea" placeholder="Faça suas anotações aqui..."></textarea>
+                </div>
+
+                <!-- Export Page -->
+                <div id="export-page" class="page">
+                    <div class="export-container">
+                        <h2>Exportar Dados</h2>
+                        <div class="export-grid">
+                            <div class="export-card">
+                                <h3>Dados SWOT</h3>
+                                <button onclick="exportData('swot', 'json')" class="btn-primary">JSON</button>
+                                <button onclick="exportData('swot', 'csv')" class="btn-secondary">CSV</button>
+                            </div>
+                            <div class="export-card">
+                                <h3>Performance</h3>
+                                <button onclick="exportData('performance', 'json')" class="btn-primary">JSON</button>
+                                <button onclick="exportData('performance', 'csv')" class="btn-secondary">CSV</button>
+                            </div>
+                            <div class="export-card">
+                                <h3>Tarefas</h3>
+                                <button onclick="exportData('tasks', 'json')" class="btn-primary">JSON</button>
+                                <button onclick="exportData('tasks', 'csv')" class="btn-secondary">CSV</button>
+                            </div>
+                            <div class="export-card">
+                                <h3>Dados Completos</h3>
+                                <button onclick="exportData('all', 'json')" class="btn-primary">JSON Completo</button>
+                                <button onclick="exportData('all', 'csv')" class="btn-secondary">CSV Completo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Adding Robot -->
+    <div id="robot-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Novo Robô</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="robot-name" placeholder="Nome do robô" class="input-field">
+                <input type="text" id="robot-category" placeholder="Categoria/Tipo" class="input-field">
+                <textarea id="robot-description" placeholder="Descrição" class="input-field"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()" class="btn-secondary">Cancelar</button>
+                <button onclick="addRobot()" class="btn-primary">Criar Robô</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
